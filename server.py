@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify, render_template
 import pickle
 import json
 import numpy as np
-import os
-from openai import OpenAI
 
 app = Flask(__name__)
 
@@ -17,13 +15,6 @@ with open('banglore_home_prices_model.pickle', 'rb') as f:
 with open("columns.json", "r") as f:
     data_columns = json.load(f)['data_columns']
 
-# -------------------------------
-# Grok client
-# -------------------------------
-client = OpenAI(
-    api_key=os.getenv("XAI_API_KEY"),
-    base_url="https://api.x.ai/v1"
-)
 
 # -------------------------------
 # Prediction function
@@ -46,28 +37,15 @@ def predict_price(location, sqft, bath, bhk):
 
 
 # -------------------------------
-# Explanation function (SAFE)
+# Simple explanation (no LLM)
 # -------------------------------
 def generate_explanation(location, sqft, bath, bhk, price):
-    prompt = f"""
-    Explain why a house in {location} with {bhk} BHK, {bath} bathrooms,
-    and {sqft} sqft costs around {price} lakhs.
-    Keep it simple and under 4 lines.
+    return f"""
+    Estimated price is ₹{price} lakhs based on:
+    - Location: {location}
+    - Size: {sqft} sqft
+    - Configuration: {bhk} BHK and {bath} bathrooms
     """
-
-    try:
-        response = client.chat.completions.create(
-            model="grok-1.5",   # 🔥 updated model
-            messages=[{"role": "user", "content": prompt}]
-        )
-
-        return response.choices[0].message.content
-
-    except Exception as e:
-        print("LLM ERROR:", e)
-
-        # ✅ fallback explanation (IMPORTANT)
-        return f"Price depends on location ({location}), size ({sqft} sqft), number of rooms ({bhk} BHK), and bathrooms ({bath})."
 
 
 # -------------------------------
@@ -95,8 +73,6 @@ def predict():
     bhk = int(data['bhk'])
 
     price = predict_price(location, sqft, bath, bhk)
-
-    # 🔥 Always returns something
     explanation = generate_explanation(location, sqft, bath, bhk, price)
 
     return jsonify({
@@ -106,9 +82,9 @@ def predict():
 
 
 # -------------------------------
-# Run server
+# Run app (Render compatible)
 # -------------------------------
 if __name__ == "__main__":
-import os
-port = int(os.environ.get("PORT", 10000))
-app.run(host="0.0.0.0", port=port)
+    import os
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)

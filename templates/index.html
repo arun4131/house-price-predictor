@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>House Price Predictor</title>
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Choices.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 420px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            position: relative;
+            margin: 12px 0;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 10px;
+            top: 12px;
+            color: gray;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px 10px 10px 35px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #667eea;
+            border: none;
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #5a67d8;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+    <h2><i class="fa-solid fa-house"></i> House Price Predictor</h2>
+
+    <div class="input-group">
+        <i class="fa-solid fa-location-dot"></i>
+        <select id="location"></select>
+    </div>
+
+    <div class="input-group">
+        <i class="fa-solid fa-ruler-combined"></i>
+        <input type="number" id="sqft" placeholder="Square Feet">
+    </div>
+
+    <div class="input-group">
+        <i class="fa-solid fa-bath"></i>
+        <input type="number" id="bath" placeholder="Bathrooms">
+    </div>
+
+    <div class="input-group">
+        <i class="fa-solid fa-bed"></i>
+        <input type="number" id="bhk" placeholder="BHK">
+    </div>
+
+    <button onclick="predictPrice()">
+        <i class="fa-solid fa-calculator"></i> Predict Price
+    </button>
+
+    <div id="result"></div>
+</div>
+
+<!-- Choices.js JS -->
+<script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+
+<script src="/static/script.js"></script>
+
+</body>
+</html>
